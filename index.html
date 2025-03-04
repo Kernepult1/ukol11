@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8"> <!-- Nastavení kódování znaků na UTF-8 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Zajišťuje responzivní design -->
+    <title>Kalkulačka</title> <!-- Název stránky -->
+    <link rel="stylesheet" href="Style.css"> <!-- Odkaz na externí soubor CSS pro stylování -->
+</head>
+<body>
+
+<!-- Hlavní kontejner kalkulačky -->
+<div class="calculator">
+    <!-- Displej kalkulačky, kde se zobrazují hodnoty a výsledky -->
+    <input type="text" id="display" disabled>
+
+    <!-- Kontejner pro tlačítka kalkulačky -->
+    <div class="buttons">
+
+        <!-- První řádek tlačítek -->
+        <button class="clear" onclick="clearDisplay()">C</button> <!-- Tlačítko pro vymazání displeje -->
+        <button class="delete" onclick="deleteLast()">⌫</button> <!-- Tlačítko pro mazání posledního znaku -->
+        <button class="frame" onclick="toggleBracket()">()</button> <!-- Tlačítko pro závorky -->
+        <button onclick="appendValue('/')">/</button> <!-- Operátor dělení -->
+
+        <!-- Druhý řádek tlačítek -->
+        <button onclick="appendValue('7')">7</button>
+        <button onclick="appendValue('8')">8</button>
+        <button onclick="appendValue('9')">9</button>
+        <button onclick="appendValue('*')">x</button> <!-- Operátor násobení -->
+
+        <!-- Třetí řádek tlačítek -->
+        <button onclick="appendValue('4')">4</button>
+        <button onclick="appendValue('5')">5</button>
+        <button onclick="appendValue('6')">6</button>
+        <button onclick="appendValue('-')">-</button> <!-- Operátor odčítání -->
+
+        <!-- Čtvrtý řádek tlačítek -->
+        <button onclick="appendValue('1')">1</button>
+        <button onclick="appendValue('2')">2</button>
+        <button onclick="appendValue('3')">3</button>
+        <button onclick="appendValue('+')">+</button> <!-- Operátor sčítání -->
+
+        <!-- Poslední řádek tlačítek -->
+        <button class="dots" onclick="appendValue('.')">.</button> <!-- Desetinná čárka -->
+        <button onclick="appendValue('0')">0</button>
+        <button class="percentages" onclick="appendValue('%')">%</button> <!-- Procento -->
+        <button class="equals" onclick="calculateResult()">=</button> <!-- Výpočet výsledku -->
+
+    </div>
+</div>
+
+<script>
+    let openBracketCount = 0;  // Proměnná pro sledování otevíracích závorek
+
+    // Funkce pro přidání hodnoty do displeje kalkulačky
+    function appendValue(value) {
+        document.getElementById('display').value += value;
+    }
+
+    // Funkce pro vymazání displeje
+    function clearDisplay() {
+        document.getElementById('display').value = '';
+    }
+
+    // Funkce pro smazání posledního znaku na displeji
+    function deleteLast() {
+        let display = document.getElementById('display');
+        display.value = display.value.slice(0, -1);
+    }
+
+    // Funkce pro výpočet matematického výrazu
+    function calculateResult() {
+        try {
+            let display = document.getElementById('display');
+            // Nahrazení procenta za dělení 100
+            display.value = display.value.replace(/%/g, '/100');
+            display.value = eval(display.value); // Vypočítá výsledek pomocí funkce eval
+        } catch {
+            document.getElementById('display').value = 'Chyba'; // V případě chyby zobrazí "Chyba"
+        }
+    }
+
+    // Funkce pro střídání závorek
+    function toggleBracket() {
+        let display = document.getElementById('display');
+        if (openBracketCount % 2 === 0) {
+            // Pokud je počet otevřených závorek sudý, přidáme otevírací závorku
+            display.value += '(';
+        } else {
+            // Pokud je počet otevřených závorek lichý, přidáme zavírací závorku
+            display.value += ')';
+        }
+        openBracketCount++;  // Zvětšíme počet závorek
+    }
+</script>
+
+</body>
+</html>
